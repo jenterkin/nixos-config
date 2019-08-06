@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+autoload -U colors && colors
+
+green_fg="%{$fg[green]%}"
+blue_fg="%{$fg[blue]%}"
+reset_color="%{$reset_color%}"
+
+PROMPT="
+$blue_fg%~$reset_color
+$green_fg➲ $reset_color"
+
+set -o vi
+
+alias ls='ls --color'
