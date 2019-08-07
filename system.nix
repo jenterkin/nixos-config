@@ -5,13 +5,27 @@
 { config, pkgs, ... }:
 
 let
-  unstable = import <unstable> {};
+  unstableTarball =
+    fetchTarball
+      https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+  homeManagerTarball = 
+    fetchTarball
+      https://github.com/rycee/home-manager/archive/master.tar.gz;
 in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
+
+  nixpkgs.config.packageOverrides = pkgs: {
+    unstable = import unstableTarball {
+      config = config.nixpkgs.config;
+    };
+    home-manager = import homeManagerTarball {
+      config = config.nixpkgs.config;
+    };
+  };
 
   # Allow unfree software
   nixpkgs.config.allowUnfree = true;
